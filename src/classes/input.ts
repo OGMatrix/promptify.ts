@@ -91,9 +91,11 @@ export class Input {
     return new Promise(async (resolve, reject) => {
       let input: string[] = [];
 
-      const handleKeypress = async({key}: {key: any}) => {
+      const handleKeypress = async (chunk: any, key: any) => {
         if (!key) return;
-        console.log(key);
+        if (chunk) {
+        }
+        // console.log(key);
         if (key.name === "c" && key.ctrl) process.exit();
         else if (key.name === "return") {
           if (required && input.length == 0) return;
@@ -106,7 +108,7 @@ export class Input {
           );
           await process.stdout.cursorTo(0, process.stdout.rows);
           process.stdin.end();
-          process.stdin.removeListener('keypress', handleKeypress);
+          process.stdin.removeListener("keypress", handleKeypress);
           await resolve(this.format(input.join(""), format));
         } else {
           if (key.name === "backspace") {
@@ -138,7 +140,7 @@ export class Input {
           );
           process.stdout.cursorTo(10 + input.length, process.stdout.rows - 2);
         }
-      }
+      };
       process.stdin.on("keypress", handleKeypress);
     });
   }
@@ -197,8 +199,10 @@ export class Input {
           process.stdout.rows - (1 + (choices.length - curChoice))
         );
 
-        const handleKeypress = async({key}: {key: any}) => {
+        const handleKeypress = async (chunk: any, key: any) => {
           if (!key) return;
+          if (chunk) {
+          }
           // console.log(key);
           if (key.name === "c" && key.ctrl) process.exit();
           if (key.name === "return") {
@@ -216,8 +220,13 @@ export class Input {
             process.stdout.cursorTo(0, process.stdout.rows - 3);
             // process.stdout.end();
             process.stdin.end();
-            process.stdin.removeListener('keypress', handleKeypress)
-            await resolve(this.format(choices[curChoice], format, {choices, index: curChoice}));
+            process.stdin.removeListener("keypress", handleKeypress);
+            await resolve(
+              this.format(choices[curChoice], format, {
+                choices,
+                index: curChoice,
+              })
+            );
           } else {
             if (key.name === "up") {
               if (curChoice != 0) {
@@ -243,7 +252,7 @@ export class Input {
               process.stdout.rows - (1 + (choices.length - curChoice))
             );
           }
-        }
+        };
 
         process.stdin.on("keypress", handleKeypress);
       }
