@@ -8,7 +8,7 @@ export const InputEnum = {
 };
 
 export class Input {
-  public VERSION = "0.0.2";
+  public VERSION = "0.0.3";
   public AUTHOR = "OGMatrix";
   public ID = "";
   private colors = {
