@@ -1,0 +1,29 @@
+{
+  "name": "ogmatrix-input",
+  "description": "A easy and modern npm package that controls users inputs to prompt the user in cmd.",
+  "version": "0.0.2",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "url": "https://github.com/OGMatrix/ogmatrix-input"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "input",
+    "prompt",
+    "ogmatrix"
+  ],
+  "author": "ogmatrix<matrix@ogmatrix.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "readline": "^1.3.0"
+  }
+}
