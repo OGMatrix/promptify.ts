@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      readline:
-        specifier: ^1.3.0
-        version: 1.3.0
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.7
@@ -18,6 +14,9 @@ importers:
       '@types/node':
         specifier: ^20.14.10
         version: 20.14.10
+      readline:
+        specifier: ^1.3.0
+        version: 1.3.0
       tsup:
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.5.3)
