@@ -6,7 +6,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "repository": {
-    "url": "https://github.com/OGMatrix/ogmatrix-input"
+    "url": "git://github.com/ogmatrix/ogmatrix-input.git"
   },
   "scripts": {
     "build": "tsup",

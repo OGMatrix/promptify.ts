@@ -13,3 +13,9 @@ export enum Format {
   Json,
   Text,
 }
+
+export enum Design {
+  Simple,
+  Modern,
+  Colorful
+}
