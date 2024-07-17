@@ -9,17 +9,29 @@
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Prompt for Text Input](#prompt-for-text-input)
-  - [Prompt for Number Input](#prompt-for-number-input)
-  - [Prompt for Selection](#prompt-for-selection)
-- [Methods](#methods)
-  - [`prompt`](#prompt)
-  - [`selection`](#selection)
-- [Formatting](#formatting)
-- [Examples](#examples)
-- [License](#license)
+- [ogmatrix-input](#ogmatrix-input)
+  - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Importing the Library](#importing-the-library)
+    - [Prompt for Text Input](#prompt-for-text-input)
+    - [Prompt for Number Input](#prompt-for-number-input)
+    - [Prompt for Selection](#prompt-for-selection)
+  - [Methods](#methods)
+    - [`prompt`](#prompt)
+      - [Parameters](#parameters)
+      - [Returns](#returns)
+    - [`selection`](#selection)
+      - [Parameters](#parameters-1)
+      - [Returns](#returns-1)
+  - [Formatting](#formatting)
+    - [JSON Format](#json-format)
+    - [Text Format](#text-format)
+  - [Examples](#examples)
+    - [Text Input Example](#text-input-example)
+    - [Selection Example](#selection-example)
+  - [License](#license)
 
 ## Installation
 
@@ -66,7 +78,11 @@ const input = new Input();
 
 (async () => {
   const choices = ['Option 1', 'Option 2', 'Option 3'];
-  const response = await input.selection('single', choices, 'Choose an option:');
+  const response = await input.selection({
+    type: 'single',
+    choices,
+    q: 'Choose an option',
+  });
   console.log(response);
 })();
 ```
@@ -98,6 +114,7 @@ The `selection` method is used to gather a selection from a list of choices.
 - **choices**: `string[]` - The list of choices to present to the user.
 - **q**: `string` - The question to display to the user.
 - **format**: `"json" | "text"` - The format of the returned data (default: "json").
+- **design**: `""` - This is being worked on stay patient. (if set it does nothing)
 
 #### Returns
 
@@ -149,7 +166,12 @@ const input = new Input();
 
 (async () => {
   const choices = ['Red', 'Blue', 'Green'];
-  const response = await input.selection('single', choices, 'Choose a color:', 'text');
+  const response = await input.selection({
+    type: 'single',
+    choices,
+    q: 'Choose a color',
+    format: 'text'
+  })
   console.log(`You chose ${response}`);
 })();
 ```
