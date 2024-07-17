@@ -25,7 +25,6 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
-          registry-url: 'https://registry.npmjs.org'
 
       - run: pnpm install --no-frozen-lockfile
       - name: Create Release Pull Request or Publish
@@ -36,20 +35,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish
-  
-      - name: Set up GitHub Package Registry
-        run: npm config set @OWNER:registry https://npm.pkg.github.com/
-        env:
-          OWNER: ogmatrix
-  
-      - name: Publish to GitHub Package Registry
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm publish
       
       
