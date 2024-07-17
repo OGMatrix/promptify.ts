@@ -1,11 +1,7 @@
 import readline from "readline";
-import { Format, Prompt, Selection } from "../enums";
-import { InputJsonOutput } from "../interfaces";
-
-export const InputEnum = {
-  Prompt: Prompt,
-  Selection: Selection,
-};
+import { Format, Prompt, Selection } from "../type";
+import { InputJsonOutput, InputSelectionSettings } from "../interfaces";
+import { Design } from "../enums";
 
 export class Input {
   public VERSION = "0.0.1";
@@ -37,10 +33,10 @@ export class Input {
     toFormat: Format,
     data: any = {}
   ): InputJsonOutput | string {
-    if (toFormat === Format.Json) {
+    if (toFormat === "json") {
       if (data) data.answer = text;
       return data;
-    } else if (toFormat === Format.Text) {
+    } else if (toFormat === "text") {
       return text;
     }
 
@@ -51,7 +47,7 @@ export class Input {
     type: Prompt,
     q: string,
     required: boolean,
-    format: Format = Format.Text
+    format: Format = "json"
   ): Promise<string | InputJsonOutput | null> {
     const questionText = `🚀  ${q}`;
     const padding = Math.max(43 - questionText.length, 0);
@@ -71,15 +67,15 @@ export class Input {
     console.log(`│${"\u00a0".repeat(43)}│`);
     console.log(`│                                   V${this.VERSION}  │`);
     console.log("└───────────────────────────────────────────┘");
-    if (type === Prompt.Text) {
+    if (type === "text") {
       console.log("\u00a0\u00a0💬 YOU:");
       process.stdout.clearLine(0);
       process.stdout.cursorTo(10, process.stdout.rows - 2);
-    } else if (type === Prompt.Number) {
+    } else if (type === "number") {
       console.log("\u00a0\u00a0💬 YOU:");
       process.stdout.clearLine(0);
       process.stdout.cursorTo(10, process.stdout.rows - 2);
-    } else if (type === Prompt.Word) {
+    } else if (type === "word") {
       console.log("Word");
     } else {
       return null;
@@ -116,16 +112,16 @@ export class Input {
           } else if (key.name === "space") input.push(" ");
           else {
             if (
-              type === Prompt.Text &&
+              type === "text" &&
               (key.name ? key.name.length == 1 : key.sequence.length == 1) &&
               (this.isLetter(key.name) ||
                 this.isNumber(key.name) ||
                 (key.sequence ? this.isSymbol(key.sequence) : false))
             ) {
               input.push(key.name ? key.name : key.sequence);
-            } else if (type === Prompt.Number && this.isNumber(key.name)) {
+            } else if (type === "number" && this.isNumber(key.name)) {
               input.push(key.name);
-            } else if (type === Prompt.Word) {
+            } else if (type === "word") {
               console.log("Word");
             }
           }
@@ -145,12 +141,13 @@ export class Input {
     });
   }
 
-  async selection(
-    type: Selection,
-    choices: string[],
-    q: string,
-    format: Format = Format.Text
-  ) {
+  async selection({
+    type,
+    choices,
+    q,
+    format = "json",
+    design = { header: Design.Modern, body: Design.Modern },
+  }: InputSelectionSettings) {
     // GENERAL CONSOLE PRINT :)
     const questionText = `🚀  ${q}`;
     const padding = Math.max(43 - questionText.length, 0);
@@ -177,7 +174,7 @@ export class Input {
 
     // SELECTION METHOD
     return new Promise(async (resolve, reject) => {
-      if (type === Selection.Single) {
+      if (type === "single") {
         let lastChoice = 0;
         let curChoice = 0;
         console.log(
