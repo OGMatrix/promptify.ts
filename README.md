@@ -55,7 +55,10 @@ import { Input } from 'ogmatrix-input';
 const input = new Input();
 
 (async () => {
-  const response = await input.prompt('text', 'What is your name?', true);
+  const response = await input.prompt({
+    type: 'text',
+    q: 'What is your name?'
+  });
   console.log(response);
 })();
 ```
@@ -66,7 +69,10 @@ const input = new Input();
 const input = new Input();
 
 (async () => {
-  const response = await input.prompt('number', 'Enter your age:', true);
+  const response = await input.prompt({
+    type: 'number',
+    q: 'Enter your age:'
+  });
   console.log(response);
 })();
 ```
@@ -97,8 +103,9 @@ The `prompt` method is used to gather text or number input from the user.
 
 - **type**: `"text" | "number"` - The type of input to prompt for.
 - **q**: `string` - The question to display to the user.
-- **required**: `boolean` - Whether the input is required.
+- **required**: `boolean` - Whether the input is required. (default: true)
 - **format**: `"json" | "text"` - The format of the returned data (default: "json").
+- **design**: `""` - This is being worked on stay patient. (if set it does nothing)
 
 #### Returns
 
@@ -129,6 +136,7 @@ The library supports formatting the output as either JSON or plain text. By defa
 The JSON format provides structured output with additional metadata.
 
 Example:
+
 ```json
 {
   "answer": "your_input_here",
@@ -142,7 +150,8 @@ Example:
 The text format returns the raw input as a string.
 
 Example:
-```
+
+```javascript
 your_input_here
 ```
 
@@ -154,7 +163,11 @@ your_input_here
 const input = new Input();
 
 (async () => {
-  const response = await input.prompt('text', 'Enter your favorite color:', true, 'text');
+  const response = await input.prompt({
+    type: 'text',
+    q: 'Enter your favorite color:',
+    format: 'text'
+  });
   console.log(`Your favorite color is ${response}`);
 })();
 ```

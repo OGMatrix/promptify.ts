@@ -1,6 +1,10 @@
 import readline from "readline";
 import { Format, Prompt, Selection } from "../type";
-import { InputJsonOutput, InputSelectionSettings } from "../interfaces";
+import {
+  InputJsonOutput,
+  InputPromptSettings,
+  InputSelectionSettings,
+} from "../interfaces";
 import { Design } from "../enums";
 
 export class Input {
@@ -43,12 +47,13 @@ export class Input {
     return "";
   }
 
-  async prompt(
-    type: Prompt,
-    q: string,
-    required: boolean,
-    format: Format = "json"
-  ): Promise<string | InputJsonOutput | null> {
+  async prompt({
+    type,
+    q,
+    required = true,
+    format = "json",
+    design = { header: Design.Modern, body: Design.Modern },
+  }: InputPromptSettings): Promise<string | InputJsonOutput | null> {
     const questionText = `🚀  ${q}`;
     const padding = Math.max(43 - questionText.length, 0);
     const paddingLeft = Math.floor(padding / 2);

@@ -1,6 +1,8 @@
 /src
 /node_modules
 /tests
+/.github
+/.changeset
 
 tsconfig.json
 tsup.config.ts
