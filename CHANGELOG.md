@@ -1,5 +1,11 @@
 # ogmatrix-input
 
+## 0.2.0
+
+### Minor Changes
+
+- d417f7f: Made interface for the settings of prompt
+
 ## 0.1.0
 
 ### Minor Changes
