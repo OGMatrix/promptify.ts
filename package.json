@@ -1,7 +1,7 @@
 {
   "name": "ogmatrix-input",
   "description": "A easy and modern npm package that controls users inputs to prompt the user in cmd.",
-  "version": "0.0.2",
+  "version": "0.0.9",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
