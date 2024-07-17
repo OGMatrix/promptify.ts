@@ -30,7 +30,7 @@
   },
   "optionalDependencies": {
     "@swc/core": "^1.6.13"
-  }
+  },
   "publishConfig": {
     "access": "public"
   }
