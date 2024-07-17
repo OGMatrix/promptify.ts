@@ -26,7 +26,7 @@
 To install the Input Library, use npm:
 
 ```bash
-npm install input-library
+npm install ogmatrix-input
 ```
 
 ## Usage
@@ -34,7 +34,7 @@ npm install input-library
 ### Importing the Library
 
 ```javascript
-import { Input } from 'input-library';
+import { Input } from 'ogmatrix-input';
 ```
 
 ### Prompt for Text Input
