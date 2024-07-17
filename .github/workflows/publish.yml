@@ -31,13 +31,13 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm run release
+          publish: pnpm run release --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish
+        run: npm publish --access public
       
       
