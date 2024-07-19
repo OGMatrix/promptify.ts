@@ -1,5 +1,11 @@
 # ogmatrix-input
 
+## 0.2.1
+
+### Patch Changes
+
+- e2e4806: Reformatted everything and added a designer to customize the modern design
+
 ## 0.2.0
 
 ### Minor Changes
