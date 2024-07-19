@@ -3,6 +3,7 @@
 /tests
 /.github
 /.changeset
+/assets
 
 tsconfig.json
 tsup.config.ts
