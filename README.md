@@ -1,7 +1,7 @@
 ![image](https://github.com/OGMatrix/ogmatrix-input/blob/main/assets/header.png?raw=true)
 # ogmatrix-input
 
-![version](https://img.shields.io/badge/version-0.2.1-blue)
+![version](https://img.shields.io/badge/version-0.2.2-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
@@ -19,6 +19,7 @@
     - [Prompt for Text Input](#prompt-for-text-input)
     - [Prompt for Number Input](#prompt-for-number-input)
     - [Prompt for Selection](#prompt-for-selection)
+    - [Prompt for Password](#prompt-for-password)
   - [Settings](#settings)
     - [Design](#design)
     - [Color Settings](#color-settings)
@@ -29,12 +30,16 @@
     - [`selection`](#selection)
       - [Parameters](#parameters-1)
       - [Returns](#returns-1)
+    - [`pwd`](#pwd)
+      - [Parameters](#parameters-2)
+      - [Returns](#returns-2)
   - [Formatting](#formatting)
     - [JSON Format](#json-format)
     - [Text Format](#text-format)
   - [Examples](#examples)
     - [Text Input Example](#text-input-example)
     - [Selection Example](#selection-example)
+    - [Password Example](#password-example)
   - [License](#license)
 
 ## Installation
@@ -94,6 +99,19 @@ const input = new Input();
     type: "single",
     choices,
     q: "Choose an option:"
+  });
+  console.log(response);
+})();
+```
+
+### Prompt for Password
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.pwd({
+    q: "Enter your password",
   });
   console.log(response);
 })();
@@ -178,11 +196,26 @@ The `selection` method is used to gather a selection from a list of choices.
 - **choices**: `string[]` - The list of choices to present to the user.
 - **q**: `string` - The question to display to the user.
 - **format**: `"json" | "text"` - The format of the returned data (default: "json").
-- **design**: `InputPromptDesignSettings` - Custom design settings for the prompt.
+- **design**: `InputSelectionDesignSettings` - Custom design settings for the prompt.
 
 #### Returns
 
 - `Promise<string | InputJsonOutput | null>` - The selected choice in the specified format.
+
+### `pwd`
+
+The `pwd` method is used to gather a password.
+
+#### Parameters
+
+- **q**: `string` - The question to display to the user.
+- **required**: `boolean` - Whether the input is required.
+- **format**: `"json" | "text"` - The format of the returned data (default: "json").
+- **design**: `InputPwdDesignSettings` - Custom design settings for the prompt.
+
+#### Returns
+
+- `Promise<string | InputJsonOutput | null>` - The password in the specified format.
 
 ## Formatting
 
@@ -241,6 +274,20 @@ const input = new Input();
     format: "text"
   });
   console.log(`You chose ${response}`);
+})();
+```
+
+### Password Example
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.pwd({
+    q: "Enter your password",
+    format: "text"
+  });
+  console.log(`Your password is ${response}`);
 })();
 ```
 

@@ -8,6 +8,24 @@ export interface InputJsonOutput {
   choices?: number;
 }
 
+export interface InputPwdSettings {
+  q: string;
+  required?: boolean;
+  format?: Format;
+  design?: InputPwdDesignSettings;
+}
+
+export interface InputPwdDesignSettings {
+  header: Design;
+  body: Design;
+  colors: InputPwdDesignColorSettings
+}
+
+export interface InputPwdDesignColorSettings {
+  box_color: string;
+  shadow_color: string;
+}
+
 export interface InputPromptSettings {
   type: Prompt;
   q: string;

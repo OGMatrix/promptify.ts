@@ -3,6 +3,7 @@ import { Format, Prompt, Selection } from "../type";
 import {
   InputJsonOutput,
   InputPromptSettings,
+  InputPwdSettings,
   InputSelectionSettings,
 } from "../interfaces";
 import { Design } from "../enums";
@@ -51,18 +52,119 @@ export class Input {
     return "";
   }
 
+  async pwd({
+    q,
+    required = true,
+    format = "json",
+    design = {
+      header: Design.Modern,
+      body: Design.Modern,
+      colors: {
+        box_color: Colors.foreground.white,
+        shadow_color: Colors.foreground.gray,
+      },
+    },
+  }: InputPwdSettings): Promise<string | InputJsonOutput | null> {
+    const designer = new Designer(design, this.logger, this.VERSION, q);
+
+    designer.log_header();
+
+    const pos = await designer.get_current_position();
+
+    const offset = pos.y < 19 ? 1 : 2;
+
+    this.logger.print(`${Colors.foreground.gray}[Press space to show/hide password]`)
+    this.logger.print(`Password: ${"_".repeat(40)}`);
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(18, pos.y - offset);
+
+    readline.emitKeypressEvents(process.stdin);
+
+    if (process.stdin.isTTY) process.stdin.setRawMode(true);
+    return new Promise(async (resolve, reject) => {
+      let input: string[] = [];
+      let showPwd: boolean = false;
+
+      const handleKeypress = async (chunk: any, key: any) => {
+        if (!key) return;
+        if (chunk) {
+        }
+        // console.log(key);
+        if (key.name === "c" && key.ctrl) process.exit();
+        else if (key.name === "return") {
+          if (required && input.length == 0) return;
+          process.stdout.cursorTo(18, pos.y - offset);
+          console.log(
+            this.colors.cyan + (showPwd
+              ? input.join("")
+              : "*".repeat(input.length)) +
+                  this.colors.reset +
+                  "_".repeat(40 - input.length)
+          );
+          await process.stdout.cursorTo(0);
+          process.stdin.end();
+          process.stdin.removeListener("keypress", handleKeypress);
+          await resolve(this.format(input.join(""), format));
+        } else if (key.name === "space") {
+          showPwd = !showPwd;
+          process.stdout.cursorTo(18, pos.y - offset);
+          console.log(
+            (showPwd
+              ? input.join("")
+              : "*".repeat(input.length)) +
+                  this.colors.reset +
+                  "_".repeat(40 - input.length)
+          );
+          process.stdout.cursorTo(18 + input.length, pos.y - offset);
+        } else {
+          if (key.name === "backspace") {
+            input.pop();
+          } else {
+            input.push(
+              key.sequence
+                ? key.sequence
+                : key.shift
+                ? key.name.toUpperCase()
+                : key.name
+            );
+          }
+
+          process.stdout.cursorTo(18 + input.length - 1, pos.y - offset);
+          console.log(
+            (input.length > 0
+              ? showPwd
+                ? input[input.length - 1]
+                : "*"
+              : "") +
+              " " +
+              "_".repeat(39 - input.length)
+          );
+          process.stdout.cursorTo(18 + input.length, pos.y - offset);
+        }
+      };
+      process.stdin.on("keypress", handleKeypress);
+    });
+  }
+
   async prompt({
     type,
     q,
     required = true,
     format = "json",
-    design = { header: Design.Modern, body: Design.Modern, colors: { box_color: Colors.foreground.white, shadow_color: Colors.foreground.gray } },
+    design = {
+      header: Design.Modern,
+      body: Design.Modern,
+      colors: {
+        box_color: Colors.foreground.white,
+        shadow_color: Colors.foreground.gray,
+      },
+    },
   }: InputPromptSettings): Promise<string | InputJsonOutput | null> {
     const designer = new Designer(design, this.logger, this.VERSION, q);
 
     designer.log_header();
 
-    const pos = await designer.get_current_position()
+    const pos = await designer.get_current_position();
 
     const offset = pos.y < 22 ? 1 : 2;
 
@@ -117,7 +219,13 @@ export class Input {
                 this.isNumber(key.name) ||
                 (key.sequence ? this.isSymbol(key.sequence) : false))
             ) {
-              input.push(key.sequence ? key.sequence : (key.shift ? key.name.toUpperCase() : key.name));
+              input.push(
+                key.sequence
+                  ? key.sequence
+                  : key.shift
+                  ? key.name.toUpperCase()
+                  : key.name
+              );
             } else if (type === "number" && this.isNumber(key.name)) {
               input.push(key.name);
             } else if (type === "word") {
@@ -125,12 +233,11 @@ export class Input {
             }
           }
 
-          process.stdout.cursorTo(
-            12 + input.length - 1, pos.y - offset
-          );
+          process.stdout.cursorTo(12 + input.length - 1, pos.y - offset);
           console.log(
-            (input.length > 0 ? input[input.length - 1] : "") + " " +
-            "_".repeat(39 - input.length)
+            (input.length > 0 ? input[input.length - 1] : "") +
+              " " +
+              "_".repeat(39 - input.length)
           );
           process.stdout.cursorTo(12 + input.length, pos.y - offset);
         }
@@ -144,14 +251,21 @@ export class Input {
     choices,
     q,
     format = "json",
-    design = { header: Design.Modern, body: Design.Modern, colors: { box_color: Colors.foreground.white, shadow_color: Colors.foreground.gray } },
+    design = {
+      header: Design.Modern,
+      body: Design.Modern,
+      colors: {
+        box_color: Colors.foreground.white,
+        shadow_color: Colors.foreground.gray,
+      },
+    },
   }: InputSelectionSettings) {
     // GENERAL CONSOLE PRINT :)
     const designer = new Designer(design, this.logger, this.VERSION, q);
 
     designer.log_header();
 
-    const pos = await designer.get_current_position()
+    const pos = await designer.get_current_position();
 
     const offset = pos.y < 22 ? -2 : 1;
 
@@ -190,10 +304,7 @@ export class Input {
           // console.log(key);
           if (key.name === "c" && key.ctrl) process.exit();
           if (key.name === "return") {
-            process.stdout.cursorTo(
-              0,
-              pos.y - (offset + choices.length)
-            );
+            process.stdout.cursorTo(0, pos.y - (offset + choices.length));
             this.logger.print(
               `You selected: ${this.colors.cyan}${choices[curChoice]}${
                 this.colors.reset
