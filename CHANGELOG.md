@@ -1,5 +1,11 @@
 # ogmatrix-input
 
+## 0.2.2
+
+### Patch Changes
+
+- 6eea621: Added password function
+
 ## 0.2.1
 
 ### Patch Changes
