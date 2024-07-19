@@ -6,6 +6,9 @@ import {
   InputSelectionSettings,
 } from "../interfaces";
 import { Design } from "../enums";
+import { Colors } from "../variables";
+import { Designer } from "./designer";
+import { Logger } from "../../logger";
 
 export class Input {
   public VERSION = "0.0.1";
@@ -17,6 +20,7 @@ export class Input {
     green: "\x1b[32m",
     reset: "\x1b[0m",
   };
+  private logger = new Logger();
 
   private isLetter(text: string): boolean {
     return /^[a-zA-Z]$/.test(text);
@@ -52,36 +56,26 @@ export class Input {
     q,
     required = true,
     format = "json",
-    design = { header: Design.Modern, body: Design.Modern },
+    design = { header: Design.Modern, body: Design.Modern, colors: { box_color: Colors.foreground.white, shadow_color: Colors.foreground.gray } },
   }: InputPromptSettings): Promise<string | InputJsonOutput | null> {
-    const questionText = `🚀  ${q}`;
-    const padding = Math.max(43 - questionText.length, 0);
-    const paddingLeft = Math.floor(padding / 2);
-    const paddingRight = padding - paddingLeft;
-    const text =
-      "\u00a0".repeat(paddingLeft) +
-      this.colors.cyan +
-      questionText +
-      this.colors.reset +
-      "\u00a0".repeat(paddingRight);
+    const designer = new Designer(design, this.logger, this.VERSION, q);
 
-    console.log("┌───────────────────────────────────────────┐");
-    console.log(`│${"\u00a0".repeat(43)}│`);
-    console.log(`│${"\u00a0".repeat(43)}│`);
-    console.log(`│${text}│`);
-    console.log(`│${"\u00a0".repeat(43)}│`);
-    console.log(`│                                   V${this.VERSION}  │`);
-    console.log("└───────────────────────────────────────────┘");
+    designer.log_header();
+
+    const pos = await designer.get_current_position()
+
+    const offset = pos.y < 22 ? 1 : 2;
+
     if (type === "text") {
-      console.log("\u00a0\u00a0💬 YOU:");
+      this.logger.print(`\u00a0\u00a0? ${"_".repeat(40)}`);
       process.stdout.clearLine(0);
-      process.stdout.cursorTo(10, process.stdout.rows - 2);
+      process.stdout.cursorTo(12, pos.y - offset);
     } else if (type === "number") {
-      console.log("\u00a0\u00a0💬 YOU:");
+      this.logger.print(`\u00a0\u00a0? ${"_".repeat(40)}`);
       process.stdout.clearLine(0);
-      process.stdout.cursorTo(10, process.stdout.rows - 2);
+      process.stdout.cursorTo(12, pos.y - offset);
     } else if (type === "word") {
-      console.log("Word");
+      this.logger.print("Word");
     } else {
       return null;
     }
@@ -100,14 +94,14 @@ export class Input {
         if (key.name === "c" && key.ctrl) process.exit();
         else if (key.name === "return") {
           if (required && input.length == 0) return;
-          process.stdout.cursorTo(10, process.stdout.rows - 2);
+          process.stdout.cursorTo(12, pos.y - offset);
           console.log(
             this.colors.cyan +
               input.join("") +
               this.colors.reset +
-              "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0"
+              "_".repeat(40 - input.length)
           );
-          await process.stdout.cursorTo(0, process.stdout.rows);
+          await process.stdout.cursorTo(0);
           process.stdin.end();
           process.stdin.removeListener("keypress", handleKeypress);
           await resolve(this.format(input.join(""), format));
@@ -123,7 +117,7 @@ export class Input {
                 this.isNumber(key.name) ||
                 (key.sequence ? this.isSymbol(key.sequence) : false))
             ) {
-              input.push(key.name ? key.name : key.sequence);
+              input.push(key.sequence ? key.sequence : (key.shift ? key.name.toUpperCase() : key.name));
             } else if (type === "number" && this.isNumber(key.name)) {
               input.push(key.name);
             } else if (type === "word") {
@@ -132,14 +126,13 @@ export class Input {
           }
 
           process.stdout.cursorTo(
-            10 + input.length - 1,
-            process.stdout.rows - 2
+            12 + input.length - 1, pos.y - offset
           );
           console.log(
-            (input.length > 0 ? input[input.length - 1] : "") +
-              "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0"
+            (input.length > 0 ? input[input.length - 1] : "") + " " +
+            "_".repeat(39 - input.length)
           );
-          process.stdout.cursorTo(10 + input.length, process.stdout.rows - 2);
+          process.stdout.cursorTo(12 + input.length, pos.y - offset);
         }
       };
       process.stdin.on("keypress", handleKeypress);
@@ -151,27 +144,16 @@ export class Input {
     choices,
     q,
     format = "json",
-    design = { header: Design.Modern, body: Design.Modern },
+    design = { header: Design.Modern, body: Design.Modern, colors: { box_color: Colors.foreground.white, shadow_color: Colors.foreground.gray } },
   }: InputSelectionSettings) {
     // GENERAL CONSOLE PRINT :)
-    const questionText = `🚀  ${q}`;
-    const padding = Math.max(43 - questionText.length, 0);
-    const paddingLeft = Math.floor(padding / 2);
-    const paddingRight = padding - paddingLeft;
-    const text =
-      "\u00a0".repeat(paddingLeft) +
-      this.colors.cyan +
-      questionText +
-      this.colors.reset +
-      "\u00a0".repeat(paddingRight);
+    const designer = new Designer(design, this.logger, this.VERSION, q);
 
-    console.log("┌───────────────────────────────────────────┐");
-    console.log(`│${"\u00a0".repeat(43)}│`);
-    console.log(`│${"\u00a0".repeat(43)}│`);
-    console.log(`│${text}│`);
-    console.log(`│${"\u00a0".repeat(43)}│`);
-    console.log(`│                                   V${this.VERSION}  │`);
-    console.log("└───────────────────────────────────────────┘");
+    designer.log_header();
+
+    const pos = await designer.get_current_position()
+
+    const offset = pos.y < 22 ? -2 : 1;
 
     readline.emitKeypressEvents(process.stdin);
 
@@ -182,23 +164,23 @@ export class Input {
       if (type === "single") {
         let lastChoice = 0;
         let curChoice = 0;
-        console.log(
+        this.logger.print(
           `[Press enter to choose selected choice or CTRL+C to exit]`
         );
         for await (const choice of choices) {
-          console.log(` -  ${choice}`);
+          this.logger.print(` -  ${choice}`);
         }
 
         process.stdout.cursorTo(
           0,
-          process.stdout.rows - (1 + (choices.length - curChoice))
+          pos.y - (offset + (choices.length - curChoice))
         );
-        console.log(
+        this.logger.print(
           ` ➔  ${this.colors.cyan}${choices[curChoice]}${this.colors.reset}`
         );
         process.stdout.cursorTo(
           0,
-          process.stdout.rows - (1 + (choices.length - curChoice))
+          pos.y - (offset + (choices.length - curChoice))
         );
 
         const handleKeypress = async (chunk: any, key: any) => {
@@ -210,16 +192,16 @@ export class Input {
           if (key.name === "return") {
             process.stdout.cursorTo(
               0,
-              process.stdout.rows - (2 + choices.length)
+              pos.y - (offset + choices.length)
             );
-            console.log(
+            this.logger.print(
               `You selected: ${this.colors.cyan}${choices[curChoice]}${
                 this.colors.reset
               }${"\u00a0".repeat(70)}\n${`${"\u00a0".repeat(70)}\n`.repeat(
                 choices.length
               )}`
             );
-            process.stdout.cursorTo(0, process.stdout.rows - 3);
+            process.stdout.cursorTo(0, pos.y - offset);
             // process.stdout.end();
             process.stdin.end();
             process.stdin.removeListener("keypress", handleKeypress);
@@ -241,17 +223,17 @@ export class Input {
                 curChoice += 1;
               }
             }
-            console.log(` -  ${this.colors.reset}${choices[lastChoice]}`);
+            this.logger.print(` -  ${this.colors.reset}${choices[lastChoice]}`);
             process.stdout.cursorTo(
               0,
-              process.stdout.rows - (1 + (choices.length - curChoice))
+              pos.y - (offset + (choices.length - curChoice))
             );
-            console.log(
+            this.logger.print(
               ` ➔  ${this.colors.cyan}${choices[curChoice]}${this.colors.reset}`
             );
             process.stdout.cursorTo(
               0,
-              process.stdout.rows - (1 + (choices.length - curChoice))
+              pos.y - (offset + (choices.length - curChoice))
             );
           }
         };
