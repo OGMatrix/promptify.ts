@@ -1,5 +1,5 @@
 import { Design } from "./enums";
-import { Format, Prompt, Selection } from "./type";
+import { FileType, Format, Prompt, Selection } from "./type";
 import { Colors } from './variables';
 
 export interface InputJsonOutput {
@@ -77,10 +77,38 @@ export interface InputSelectionSettings {
   choices: string[];
   q: string;
   format?: Format;
-  design?: InputPromptDesignSettings;
+  design?: InputSelectionDesignSettings;
 }
 
 export interface InputSelectionDesignSettings {
   header: Design;
   body: Design;
+  colors: InputSelectionDesignColorSettings
+}
+
+export interface InputSelectionDesignColorSettings {
+  box_color: string;
+  shadow_color: string;
+}
+
+// Filedialog
+export interface InputFiledialogSettings {
+  type: FileType;
+  q: string;
+  startPath?: string;
+  extensions?: string;
+  showHiddenFolders?: boolean;
+  format?: Format;
+  design?: InputFiledialogDesignSettings;
+}
+
+export interface InputFiledialogDesignSettings {
+  header: Design;
+  body: Design;
+  colors: InputFiledialogDesignColorSettings
+}
+
+export interface InputFiledialogDesignColorSettings {
+  box_color: string;
+  shadow_color: string;
 }

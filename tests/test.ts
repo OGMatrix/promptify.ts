@@ -18,11 +18,16 @@ const input = new Input();
   //   q: "Which service do you want to use?",
   // });
   // const res = await input.pwd({q: "How are you?"});
-  const res = await input.bool({
-    q: "Möchtest du abbrechen?",
-    default_bool: true,
-    format: "json"
-  })
+  // const res = await input.bool({
+  //   q: "Möchtest du abbrechen?",
+  //   default_bool: true,
+  //   format: "json"
+  // })
+  const res = await input.filedialog({
+    type: "file",
+    startPath: "D:/npm/packages/ogmatrix-input",
+    q: "What file do you want to use?",
+  });
 
   console.log(res)
   

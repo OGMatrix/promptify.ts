@@ -1,7 +1,7 @@
 ![image](https://github.com/OGMatrix/ogmatrix-input/blob/main/assets/header.png?raw=true)
 # ogmatrix-input
 
-![version](https://img.shields.io/badge/version-0.2.3-blue)
+![version](https://img.shields.io/badge/version-0.3.1-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
@@ -21,6 +21,7 @@
     - [Prompt for Selection](#prompt-for-selection)
     - [Prompt for Password](#prompt-for-password)
     - [Prompt for Boolean](#prompt-for-boolean)
+    - [Prompt for a File](#prompt-for-a-file)
   - [Settings](#settings)
     - [Design](#design)
     - [Color Settings](#color-settings)
@@ -37,6 +38,9 @@
     - [`bool`](#bool)
       - [Parameters](#parameters-3)
       - [Returns](#returns-3)
+    - [`filedialog`](#filedialog)
+      - [Parameters](#parameters-4)
+      - [Returns](#returns-4)
   - [Formatting](#formatting)
     - [JSON Format](#json-format)
     - [Text Format](#text-format)
@@ -45,6 +49,7 @@
     - [Selection Example](#selection-example)
     - [Password Example](#password-example)
     - [Boolean Example](#boolean-example)
+    - [Filedialog Example](#filedialog-example)
   - [License](#license)
 
 ## Installation
@@ -131,6 +136,20 @@ const input = new Input();
   const response = await input.bool({
     q: "Do you want to continue?",
     default_bool: true
+  });
+  console.log(response);
+})();
+```
+
+### Prompt for a File
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.filedialog({
+    type: "file",
+    q: "Select your config file"
   });
   console.log(response);
 })();
@@ -252,6 +271,24 @@ The `bool` method is used to gather a boolean.
 
 - `Promise<string | InputJsonOutput | null>` - The boolean in the specified format.
 
+### `filedialog`
+
+The `filedialog` method is used to gather a file path.
+
+#### Parameters
+
+- **type**: `string` - The type you want to gather ("file" or "folder")
+- **q**: `string` - The question or prompt to display to the user.
+- **startPath**: `string` - Where the dialog will start at (default: "__dirname" (current file path) ).
+- **extensions**: `string` - What extensions you want to filter. (default: "*", example: ".jpg,.png,.jpeg")
+- **showHiddenFolders**: `boolean` - Whether to show hidden folders (start with ".") (default: false).
+- **format**: `"json" | "text"` - The format of the returned data (default: "json").
+- **design**: `InputFiledialogDesignSettings` - Custom design settings for the prompt.
+
+#### Returns
+
+- `Promise<string | InputJsonOutput | null>` - The file path in the specified format.
+
 ## Formatting
 
 The library supports formatting the output as either JSON or plain text. By default, the output is formatted as JSON, but this can be changed by setting the `format` parameter in the methods.
@@ -346,6 +383,24 @@ const input = new Input();
     format: "text"
   });
   console.log(`Your boolean is ${response}`);
+})();
+```
+
+### Filedialog Example
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.filedialog({
+    type: "file",
+    q: "Choose your favourite image",
+    startPath: "E:/users/YOUR_USER/pictures",
+    showHiddenFolders: true,
+    extensions: ".png,.jpg,.jpeg,.avif",
+    format: "text"
+  });
+  console.log(`You chose ${response}`);
 })();
 ```
 

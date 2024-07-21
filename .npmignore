@@ -4,6 +4,7 @@
 /.github
 /.changeset
 /assets
+/__tests__
 
 tsconfig.json
 tsup.config.ts

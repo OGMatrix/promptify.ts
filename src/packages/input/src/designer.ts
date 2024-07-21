@@ -77,8 +77,10 @@ export class Designer {
     return new Promise((resolve) => {
         const termcodes = { cursorGetPosition: '\u001b[6n' };
     
-        process.stdin.setEncoding('utf8');
-        process.stdin.setRawMode(true);
+        if (process.stdin.isTTY) {
+          process.stdin.setEncoding('utf8');
+          process.stdin.setRawMode(true);
+        }
     
         const readfx = function () {
             const buf = process.stdin.read();
@@ -88,7 +90,9 @@ export class Designer {
             if (reg) {
                 const xy = reg[0].replace(/\[|R"/g, '').split(';');
                 const pos = { y: xy[0], x: xy[1] };
-                process.stdin.setRawMode(false);
+                if (process.stdin.isTTY) {
+                  process.stdin.setRawMode(false);
+                }
                 resolve(pos);
             }
         }
