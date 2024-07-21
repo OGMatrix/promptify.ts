@@ -1,5 +1,11 @@
 # ogmatrix-input
 
+## 0.3.1
+
+### Patch Changes
+
+- 06fb64b: Renamed
+
 ## 0.3.0
 
 ### Minor Changes

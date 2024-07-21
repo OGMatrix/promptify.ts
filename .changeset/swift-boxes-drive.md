@@ -1,5 +1,0 @@
----
-"promptify.ts": patch
----
-
-Renamed
