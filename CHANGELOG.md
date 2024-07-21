@@ -1,5 +1,11 @@
 # ogmatrix-input
 
+## 0.2.3
+
+### Patch Changes
+
+- 1905a87: Added boolean method and fixed a major problem with the line contolling now it works everytime
+
 ## 0.2.2
 
 ### Patch Changes
