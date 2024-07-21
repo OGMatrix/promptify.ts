@@ -1,7 +1,7 @@
 ![image](https://github.com/OGMatrix/ogmatrix-input/blob/main/assets/header.png?raw=true)
 # ogmatrix-input
 
-![version](https://img.shields.io/badge/version-0.3.1-blue)
+![version](https://img.shields.io/badge/version-0.3.0-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
