@@ -15,7 +15,7 @@ import { Logger } from "../../logger";
 import { Filesystem } from "../../filesystem";
 
 export class Input {
-  public VERSION = "0.3.1";
+  public VERSION = "0.3.0";
   public AUTHOR = "OGMatrix";
   public ID = "";
   private colors = {
