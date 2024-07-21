@@ -17,10 +17,16 @@ const input = new Input();
   //   choices: ["Choice 1", "Choice 2"],
   //   q: "Which service do you want to use?",
   // });
-  const res = await input.pwd({q: "How are you?"});
+  // const res = await input.pwd({q: "How are you?"});
+  const res = await input.bool({
+    q: "Möchtest du abbrechen?",
+    default_bool: true,
+    format: "json"
+  })
 
-  // logger.log(res);
   console.log(res)
+  
+  process.exit()
 
   // designer.log_header()
 })();

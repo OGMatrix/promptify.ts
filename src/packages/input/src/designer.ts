@@ -25,7 +25,7 @@ export class Designer {
   log_header() {
     switch (this.design.header) {
       case Design.Modern:
-        const questionText = `🚀  ${this.q}`;
+        const questionText = `\u{1F680} ${this.q}`;
         const padding = Math.max(43 - questionText.length, 0);
         const paddingLeft = Math.floor(padding / 2);
         const paddingRight = padding - paddingLeft;

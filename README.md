@@ -1,7 +1,7 @@
 ![image](https://github.com/OGMatrix/ogmatrix-input/blob/main/assets/header.png?raw=true)
 # ogmatrix-input
 
-![version](https://img.shields.io/badge/version-0.2.2-blue)
+![version](https://img.shields.io/badge/version-0.2.3-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
@@ -20,6 +20,7 @@
     - [Prompt for Number Input](#prompt-for-number-input)
     - [Prompt for Selection](#prompt-for-selection)
     - [Prompt for Password](#prompt-for-password)
+    - [Prompt for Boolean](#prompt-for-boolean)
   - [Settings](#settings)
     - [Design](#design)
     - [Color Settings](#color-settings)
@@ -33,6 +34,9 @@
     - [`pwd`](#pwd)
       - [Parameters](#parameters-2)
       - [Returns](#returns-2)
+    - [`bool`](#bool)
+      - [Parameters](#parameters-3)
+      - [Returns](#returns-3)
   - [Formatting](#formatting)
     - [JSON Format](#json-format)
     - [Text Format](#text-format)
@@ -40,6 +44,7 @@
     - [Text Input Example](#text-input-example)
     - [Selection Example](#selection-example)
     - [Password Example](#password-example)
+    - [Boolean Example](#boolean-example)
   - [License](#license)
 
 ## Installation
@@ -112,6 +117,20 @@ const input = new Input();
 (async () => {
   const response = await input.pwd({
     q: "Enter your password",
+  });
+  console.log(response);
+})();
+```
+
+### Prompt for Boolean
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.bool({
+    q: "Do you want to continue?",
+    default_bool: true
   });
   console.log(response);
 })();
@@ -217,6 +236,22 @@ The `pwd` method is used to gather a password.
 
 - `Promise<string | InputJsonOutput | null>` - The password in the specified format.
 
+### `bool`
+
+The `bool` method is used to gather a boolean.
+
+#### Parameters
+
+- **q**: `string` - The question to display to the user.
+- **required**: `boolean` - Whether the input is required.
+- **default_bool**: `boolean` - What the default boolean should be.
+- **format**: `"json" | "text"` - The format of the returned data (default: "json").
+- **design**: `InputBoolDesignSettings` - Custom design settings for the prompt.
+
+#### Returns
+
+- `Promise<string | InputJsonOutput | null>` - The boolean in the specified format.
+
 ## Formatting
 
 The library supports formatting the output as either JSON or plain text. By default, the output is formatted as JSON, but this can be changed by setting the `format` parameter in the methods.
@@ -231,6 +266,14 @@ Example:
   "answer": "your_input_here",
   "index": 1,
   "choices": ["Option 1", "Option 2", "Option 3"]
+}
+```
+
+Example for boolean:
+```json
+{
+  "answer": "true",
+  "bool": true
 }
 ```
 
@@ -288,6 +331,21 @@ const input = new Input();
     format: "text"
   });
   console.log(`Your password is ${response}`);
+})();
+```
+
+### Boolean Example
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.bool({
+    q: "Do you want to continue?",
+    default_bool: true,
+    format: "text"
+  });
+  console.log(`Your boolean is ${response}`);
 })();
 ```
 

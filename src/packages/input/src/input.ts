@@ -1,6 +1,7 @@
 import readline from "readline";
 import { Format, Prompt, Selection } from "../type";
 import {
+  InputBoolSettings,
   InputJsonOutput,
   InputPromptSettings,
   InputPwdSettings,
@@ -12,7 +13,7 @@ import { Designer } from "./designer";
 import { Logger } from "../../logger";
 
 export class Input {
-  public VERSION = "0.0.1";
+  public VERSION = "0.2.3";
   public AUTHOR = "OGMatrix";
   public ID = "";
   private colors = {
@@ -52,6 +53,79 @@ export class Input {
     return "";
   }
 
+  async bool({
+    q,
+    required = true,
+    default_bool = true,
+    format = "json",
+    design = {
+      header: Design.Modern,
+      body: Design.Modern,
+      colors: {
+        box_color: Colors.foreground.white,
+        shadow_color: Colors.foreground.gray,
+      },
+    },
+  }: InputBoolSettings): Promise<string | InputJsonOutput | null> {
+    const designer = new Designer(design, this.logger, this.VERSION, q);
+
+    designer.log_header();
+
+    this.logger.print(`[${default_bool ? 'Y' : 'y'}/${default_bool ? 'n' : 'N'}]? `, true);
+    process.stdout.cursorTo(15);
+
+    readline.emitKeypressEvents(process.stdin);
+
+    if (process.stdin.isTTY) process.stdin.setRawMode(true);
+    return new Promise(async (resolve, reject) => {
+      let input: string[] = [];
+      let selected_bool: boolean = default_bool;
+      const supported = ["yes", "no", "ja", "nein", "true", "false", "y", "n", "j"]
+      const positive = ["yes", "ja", "true", "y", "j"]
+      const negative = ["no", "nein", "false", "n"]
+
+      const handleKeypress = async (chunk: any, key: any) => {
+        if (!key) return;
+        if (chunk) {
+        }
+        // console.log(key);
+        if (key.name === "c" && key.ctrl) process.exit();
+        else if (key.name === "return") {
+          if (required && input.length == 0) selected_bool = default_bool;
+          else if (!supported.includes(input.join(""))) return;
+          process.stdout.cursorTo(15);
+          console.log(this.colors.cyan + `${input.length > 0 ? input.join("") : (selected_bool ? 'true' : 'false')} ${Colors.reset}`);
+          await process.stdout.cursorTo(0);
+          process.stdin.end();
+          process.stdin.removeListener("keypress", handleKeypress);
+          await resolve(this.format(input.length > 0 ? input.join("") : `${selected_bool ? 'true' : 'false'}`, format, {bool: input.length > 0 ? (positive.includes(input.join("")) ? true : false) : selected_bool}));
+        } else {
+          if (key.name === "backspace") {
+            input.pop();
+          } else {
+            input.push(
+              key.sequence
+                ? key.sequence
+                : key.shift
+                ? key.name.toUpperCase()
+                : key.name
+            );
+          }
+
+          process.stdout.cursorTo(15 + input.length - 1);
+          process.stdout.write(
+            (input.length > 0
+              ? input[input.length - 1]
+              : "")
+              + "\u00a0".repeat(40)
+          );
+          process.stdout.cursorTo(15 + input.length);
+        }
+      };
+      process.stdin.on("keypress", handleKeypress);
+    });
+  }
+
   async pwd({
     q,
     required = true,
@@ -69,14 +143,9 @@ export class Input {
 
     designer.log_header();
 
-    const pos = await designer.get_current_position();
-
-    const offset = pos.y < 19 ? 1 : 2;
-
     this.logger.print(`${Colors.foreground.gray}[Press space to show/hide password]`)
-    this.logger.print(`Password: ${"_".repeat(40)}`);
-    process.stdout.clearLine(0);
-    process.stdout.cursorTo(18, pos.y - offset);
+    this.logger.print(`Password: ${"_".repeat(40)}`, true);
+    process.stdout.cursorTo(18);
 
     readline.emitKeypressEvents(process.stdin);
 
@@ -93,7 +162,7 @@ export class Input {
         if (key.name === "c" && key.ctrl) process.exit();
         else if (key.name === "return") {
           if (required && input.length == 0) return;
-          process.stdout.cursorTo(18, pos.y - offset);
+          process.stdout.cursorTo(18);
           console.log(
             this.colors.cyan + (showPwd
               ? input.join("")
@@ -107,15 +176,15 @@ export class Input {
           await resolve(this.format(input.join(""), format));
         } else if (key.name === "space") {
           showPwd = !showPwd;
-          process.stdout.cursorTo(18, pos.y - offset);
-          console.log(
+          process.stdout.cursorTo(18);
+          process.stdout.write(
             (showPwd
               ? input.join("")
               : "*".repeat(input.length)) +
                   this.colors.reset +
                   "_".repeat(40 - input.length)
           );
-          process.stdout.cursorTo(18 + input.length, pos.y - offset);
+          process.stdout.cursorTo(18 + input.length);
         } else {
           if (key.name === "backspace") {
             input.pop();
@@ -129,8 +198,8 @@ export class Input {
             );
           }
 
-          process.stdout.cursorTo(18 + input.length - 1, pos.y - offset);
-          console.log(
+          process.stdout.cursorTo(18 + input.length - 1);
+          process.stdout.write(
             (input.length > 0
               ? showPwd
                 ? input[input.length - 1]
@@ -139,7 +208,7 @@ export class Input {
               " " +
               "_".repeat(39 - input.length)
           );
-          process.stdout.cursorTo(18 + input.length, pos.y - offset);
+          process.stdout.cursorTo(18 + input.length);
         }
       };
       process.stdin.on("keypress", handleKeypress);
@@ -164,18 +233,12 @@ export class Input {
 
     designer.log_header();
 
-    const pos = await designer.get_current_position();
-
-    const offset = pos.y < 22 ? 1 : 2;
-
     if (type === "text") {
-      this.logger.print(`\u00a0\u00a0? ${"_".repeat(40)}`);
-      process.stdout.clearLine(0);
-      process.stdout.cursorTo(12, pos.y - offset);
+      this.logger.print(`\u00a0\u00a0? ${"_".repeat(40)}`, true);
+      process.stdout.cursorTo(12);
     } else if (type === "number") {
-      this.logger.print(`\u00a0\u00a0? ${"_".repeat(40)}`);
-      process.stdout.clearLine(0);
-      process.stdout.cursorTo(12, pos.y - offset);
+      this.logger.print(`\u00a0\u00a0? ${"_".repeat(40)}`, true);
+      process.stdout.cursorTo(12);
     } else if (type === "word") {
       this.logger.print("Word");
     } else {
@@ -195,8 +258,8 @@ export class Input {
         // console.log(key);
         if (key.name === "c" && key.ctrl) process.exit();
         else if (key.name === "return") {
-          if (required && input.length == 0) return;
-          process.stdout.cursorTo(12, pos.y - offset);
+          if (required && input.length == 0) return
+          process.stdout.cursorTo(12);
           console.log(
             this.colors.cyan +
               input.join("") +
@@ -232,14 +295,13 @@ export class Input {
               console.log("Word");
             }
           }
-
-          process.stdout.cursorTo(12 + input.length - 1, pos.y - offset);
-          console.log(
+          process.stdout.cursorTo(12 + input.length - 1);
+          process.stdout.write(
             (input.length > 0 ? input[input.length - 1] : "") +
               " " +
               "_".repeat(39 - input.length)
-          );
-          process.stdout.cursorTo(12 + input.length, pos.y - offset);
+          )
+          process.stdout.cursorTo(12 + input.length);
         }
       };
       process.stdin.on("keypress", handleKeypress);
@@ -267,8 +329,6 @@ export class Input {
 
     const pos = await designer.get_current_position();
 
-    const offset = pos.y < 22 ? -2 : 1;
-
     readline.emitKeypressEvents(process.stdin);
 
     if (process.stdin.isTTY) process.stdin.setRawMode(true);
@@ -279,23 +339,18 @@ export class Input {
         let lastChoice = 0;
         let curChoice = 0;
         this.logger.print(
-          `[Press enter to choose selected choice or CTRL+C to exit]`
+          `${Colors.foreground.gray}[Press enter to choose selected choice or CTRL+C to exit]${Colors.reset}`
         );
-        for await (const choice of choices) {
-          this.logger.print(` -  ${choice}`);
+
+        let text = ``
+
+        for (let i = 0; i < choices.length; i++) {
+          if (curChoice == i) text += ` ➔  ${this.colors.cyan}${choices[i]}${this.colors.reset}\n`;
+          else text += `${i > 0 ? `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t` : ''} -  ${choices[i]}\n`;
         }
 
-        process.stdout.cursorTo(
-          0,
-          pos.y - (offset + (choices.length - curChoice))
-        );
-        this.logger.print(
-          ` ➔  ${this.colors.cyan}${choices[curChoice]}${this.colors.reset}`
-        );
-        process.stdout.cursorTo(
-          0,
-          pos.y - (offset + (choices.length - curChoice))
-        );
+        this.logger.print(text, true);
+        text = ``
 
         const handleKeypress = async (chunk: any, key: any) => {
           if (!key) return;
@@ -304,17 +359,19 @@ export class Input {
           // console.log(key);
           if (key.name === "c" && key.ctrl) process.exit();
           if (key.name === "return") {
-            process.stdout.cursorTo(0, pos.y - (offset + choices.length));
-            this.logger.print(
-              `You selected: ${this.colors.cyan}${choices[curChoice]}${
+            // process.stdout.cursorTo(0, pos.y - (offset + choices.length));
+            text = `You selected: ${this.colors.cyan}${choices[curChoice]}${
                 this.colors.reset
               }${"\u00a0".repeat(70)}\n${`${"\u00a0".repeat(70)}\n`.repeat(
-                choices.length
-              )}`
+                1
+            )}`
+
+            process.stdout.clearLine(0);
+            process.stdout.write("\x1B[1A\x1B[1A");
+            this.logger.print(
+              text
             );
-            process.stdout.cursorTo(0, pos.y - offset);
             // process.stdout.end();
-            process.stdin.end();
             process.stdin.removeListener("keypress", handleKeypress);
             await resolve(
               this.format(choices[curChoice], format, {
@@ -334,18 +391,17 @@ export class Input {
                 curChoice += 1;
               }
             }
-            this.logger.print(` -  ${this.colors.reset}${choices[lastChoice]}`);
-            process.stdout.cursorTo(
-              0,
-              pos.y - (offset + (choices.length - curChoice))
-            );
-            this.logger.print(
-              ` ➔  ${this.colors.cyan}${choices[curChoice]}${this.colors.reset}`
-            );
-            process.stdout.cursorTo(
-              0,
-              pos.y - (offset + (choices.length - curChoice))
-            );
+
+            text = ``
+            for (let i = 0; i < choices.length; i++) {
+              if (curChoice == i) text += `${i > 0 ? `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t` : ''} ➔  ${this.colors.cyan}${choices[i]}${this.colors.reset}\n`;
+              else text += `${i > 0 ? `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t` : ''} -  ${choices[i]}\n`;
+            }
+
+            process.stdout.clearLine(0);
+            process.stdout.write("\x1B[1A\x1B[1A");
+            this.logger.print(text, true);
+            text = ``
           }
         };
 

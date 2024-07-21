@@ -8,6 +8,29 @@ export interface InputJsonOutput {
   choices?: number;
 }
 
+// Bool
+
+export interface InputBoolSettings {
+  q: string;
+  required?: boolean;
+  default_bool?: boolean;
+  format?: Format;
+  design?: InputBoolDesignSettings;
+}
+
+export interface InputBoolDesignSettings {
+  header: Design;
+  body: Design;
+  colors: InputBoolDesignColorSettings
+}
+
+export interface InputBoolDesignColorSettings {
+  box_color: string;
+  shadow_color: string;
+}
+
+// PWD
+
 export interface InputPwdSettings {
   q: string;
   required?: boolean;
@@ -25,6 +48,8 @@ export interface InputPwdDesignColorSettings {
   box_color: string;
   shadow_color: string;
 }
+
+// PROMPT
 
 export interface InputPromptSettings {
   type: Prompt;
@@ -44,6 +69,8 @@ export interface InputPromptDesignColorSettings {
   box_color: string;
   shadow_color: string;
 }
+
+// SELECTION
 
 export interface InputSelectionSettings {
   type: Selection;

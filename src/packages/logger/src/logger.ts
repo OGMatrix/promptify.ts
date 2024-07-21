@@ -8,9 +8,9 @@ export class Logger {
 
   constructor() {}
 
-  print(message: string): void {
+  print(message: string, updateable: boolean = false): void {
     try {
-      console.log(`\x1b[30m\x1b[46m⬪${this.colors.reset}\t${message}`);
+      process.stdout.write(`\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${message}${updateable ? '' : '\n'}`);
     } catch (error) {
       console.error('Error loading SVG:', error);
     }
