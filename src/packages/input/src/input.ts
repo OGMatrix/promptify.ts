@@ -15,15 +15,9 @@ import { Logger } from "../../logger";
 import { Filesystem } from "../../filesystem";
 
 export class Input {
-  public VERSION = "0.3.0";
+  public VERSION = "0.3.1";
   public AUTHOR = "OGMatrix";
   public ID = "";
-  private colors = {
-    cyan: "\x1b[36m",
-    yellow: "\x1b[33m",
-    green: "\x1b[32m",
-    reset: "\x1b[0m",
-  };
   private logger = new Logger();
 
   private isLetter(text: string): boolean {
@@ -110,7 +104,7 @@ export class Input {
           else if (!supported.includes(input.join(""))) return;
           readline.cursorTo(process.stdout, 15);
           console.log(
-            this.colors.cyan +
+            Colors.foreground.cyan +
               `${
                 input.length > 0
                   ? input.join("")
@@ -203,9 +197,9 @@ export class Input {
           if (required && input.length == 0) return;
           readline.cursorTo(process.stdout, 18);
           console.log(
-            this.colors.cyan +
+            Colors.foreground.cyan +
               (showPwd ? input.join("") : "*".repeat(input.length)) +
-              this.colors.reset +
+              Colors.reset +
               "_".repeat(40 - input.length)
           );
           await readline.cursorTo(process.stdout, 0);
@@ -217,7 +211,7 @@ export class Input {
           readline.cursorTo(process.stdout, 18);
           process.stdout.write(
             (showPwd ? input.join("") : "*".repeat(input.length)) +
-              this.colors.reset +
+              Colors.reset +
               "_".repeat(40 - input.length)
           );
           readline.cursorTo(process.stdout, 18 + input.length);
@@ -297,9 +291,9 @@ export class Input {
           if (required && input.length == 0) return;
           readline.cursorTo(process.stdout, 12);
           console.log(
-            this.colors.cyan +
+            Colors.foreground.cyan +
               input.join("") +
-              this.colors.reset +
+              Colors.reset +
               "_".repeat(40 - input.length)
           );
           await readline.cursorTo(process.stdout, 0);
@@ -382,10 +376,10 @@ export class Input {
 
         for (let i = 0; i < choices.length; i++) {
           if (curChoice == i)
-            text += ` ➔  ${this.colors.cyan}${choices[i]}${this.colors.reset}\n`;
+            text += ` ➔  ${Colors.foreground.cyan}${choices[i]}${Colors.reset}\n`;
           else
             text += `${
-              i > 0 ? `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t` : ""
+              i > 0 ? `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t` : ""
             } -  ${choices[i]}\n`;
         }
 
@@ -400,8 +394,8 @@ export class Input {
           if (key.name === "c" && key.ctrl) process.exit();
           if (key.name === "return") {
             // readline.cursorTo(process.stdout, 0, pos.y - (offset + choices.length));
-            text = `You selected: ${this.colors.cyan}${choices[curChoice]}${
-              this.colors.reset
+            text = `You selected: ${Colors.foreground.cyan}${choices[curChoice]}${
+              Colors.reset
             }${"\u00a0".repeat(70)}\n${`${"\u00a0".repeat(70)}\n`.repeat(1)}`;
 
             process.stdout.clearLine(0);
@@ -432,11 +426,11 @@ export class Input {
             for (let i = 0; i < choices.length; i++) {
               if (curChoice == i)
                 text += `${
-                  i > 0 ? `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t` : ""
-                } ➔  ${this.colors.cyan}${choices[i]}${this.colors.reset}\n`;
+                  i > 0 ? `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t` : ""
+                } ➔  ${Colors.foreground.cyan}${choices[i]}${Colors.reset}\n`;
               else
                 text += `${
-                  i > 0 ? `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t` : ""
+                  i > 0 ? `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t` : ""
                 } -  ${choices[i]}\n`;
             }
 
@@ -498,19 +492,19 @@ export class Input {
 
         for (let i = 0; i < showFiles; i++) {
           if (i == 0)
-            text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-              this.colors.cyan
+            text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+              Colors.foreground.cyan
             }${items[i].type === "folder" ? "  \u{1F4C1}" : "    "} ${
               items[i].name
-            }${this.colors.reset}\n`;
+            }${Colors.reset}\n`;
           else
-            text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+            text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
               items[i].type === "folder" ? "  \u{1F4C1}" : "    "
             } ${items[i].name}\n`;
         }
 
         this.logger.print(
-          text + `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t`,
+          text + `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t`,
           true
         );
         text = ``;
@@ -530,7 +524,7 @@ export class Input {
               items = await filesystem.getContentByLocation(path);
               text = `${Colors.foreground.gray}${path}${"\u00a0".repeat(40)}\n`;
               if (items.length == 0) {
-                text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
+                text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
               } else {
                 for (
                   let i = 0;
@@ -538,13 +532,13 @@ export class Input {
                   i++
                 ) {
                   if (i == 0)
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-                      this.colors.cyan
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+                      Colors.foreground.cyan
                     }${items[i].type === "folder" ? "  \u{1F4C1}" : "    "} ${
                       items[i].name
-                    }${"\u00a0".repeat(40)}${this.colors.reset}\n`;
+                    }${"\u00a0".repeat(40)}${Colors.reset}\n`;
                   else
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
                       items[i].type === "folder" ? "  \u{1F4C1}" : "    "
                     } ${items[i].name}${"\u00a0".repeat(40)}\n`;
                 }
@@ -554,13 +548,13 @@ export class Input {
                 if (items.length == 0) {
                   for (let i = 0; i < showFiles - items.length - 1; i++) {
                     text += `\x1b[30m\x1b[46m\u2B2A${
-                      this.colors.reset
+                      Colors.reset
                     }\t${"\u00a0".repeat(30)}\n`;
                   }
                 } else {
                   for (let i = 0; i < showFiles - items.length; i++) {
                     text += `\x1b[30m\x1b[46m\u2B2A${
-                      this.colors.reset
+                      Colors.reset
                     }\t${"\u00a0".repeat(30)}\n`;
                   }
                 }
@@ -573,7 +567,7 @@ export class Input {
               readline.cursorTo(process.stdout, 0);
               this.logger.print(
                 text +
-                  `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${input.join(
+                  `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${input.join(
                     ""
                   )}`,
                 true
@@ -583,8 +577,8 @@ export class Input {
               // readline.cursorTo(process.stdout, 0, pos.y - (offset + choices.length));
               path = filesystem.go(path, items[curChoice].name);
               text = ``;
-              text = `You selected: ${this.colors.cyan}${path}${
-                this.colors.reset
+              text = `You selected: ${Colors.foreground.cyan}${path}${
+                Colors.reset
               }${"\u00a0".repeat(70)}\n${`\x1b[30m\x1b[46m\u2B2A${
                 Colors.reset
               }${"\u00a0".repeat(70)}\n`.repeat(6)}`;
@@ -608,7 +602,7 @@ export class Input {
               items = await filesystem.getContentByLocation(path);
               text = `${Colors.foreground.gray}${path}${"\u00a0".repeat(40)}\n`;
               if (items.length == 0) {
-                text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
+                text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
               } else {
                 for (
                   let i = 0;
@@ -616,13 +610,13 @@ export class Input {
                   i++
                 ) {
                   if (i == 0)
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-                      this.colors.cyan
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+                      Colors.foreground.cyan
                     }${items[i].type === "folder" ? "  \u{1F4C1}" : "    "} ${
                       items[i].name
-                    }${"\u00a0".repeat(40)}${this.colors.reset}\n`;
+                    }${"\u00a0".repeat(40)}${Colors.reset}\n`;
                   else
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
                       items[i].type === "folder" ? "  \u{1F4C1}" : "    "
                     } ${items[i].name}${"\u00a0".repeat(40)}\n`;
                 }
@@ -632,13 +626,13 @@ export class Input {
                 if (items.length == 0) {
                   for (let i = 0; i < showFiles - items.length - 1; i++) {
                     text += `\x1b[30m\x1b[46m\u2B2A${
-                      this.colors.reset
+                      Colors.reset
                     }\t${"\u00a0".repeat(30)}\n`;
                   }
                 } else {
                   for (let i = 0; i < showFiles - items.length; i++) {
                     text += `\x1b[30m\x1b[46m\u2B2A${
-                      this.colors.reset
+                      Colors.reset
                     }\t${"\u00a0".repeat(30)}\n`;
                   }
                 }
@@ -651,7 +645,7 @@ export class Input {
               readline.cursorTo(process.stdout, 0);
               this.logger.print(
                 text +
-                  `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${input.join(
+                  `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${input.join(
                     ""
                   )}`,
                 true
@@ -665,7 +659,7 @@ export class Input {
             items = await filesystem.getContentByLocation(path);
             text = `${Colors.foreground.gray}${path}${"\u00a0".repeat(40)}\n`;
             if (items.length == 0) {
-              text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
+              text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
             } else {
               for (
                 let i = 0;
@@ -673,13 +667,13 @@ export class Input {
                 i++
               ) {
                 if (i == 0)
-                  text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-                    this.colors.cyan
+                  text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+                    Colors.foreground.cyan
                   }${items[i].type === "folder" ? "  \u{1F4C1}" : "    "} ${
                     items[i].name
-                  }${"\u00a0".repeat(40)}${this.colors.reset}\n`;
+                  }${"\u00a0".repeat(40)}${Colors.reset}\n`;
                 else
-                  text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+                  text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
                     items[i].type === "folder" ? "  \u{1F4C1}" : "    "
                   } ${items[i].name}${"\u00a0".repeat(40)}\n`;
               }
@@ -688,7 +682,7 @@ export class Input {
             if (items.length < showFiles) {
               for (let i = 0; i < showFiles - items.length; i++) {
                 text += `\x1b[30m\x1b[46m\u2B2A${
-                  this.colors.reset
+                  Colors.reset
                 }\t${"\u00a0".repeat(30)}\n`;
               }
             }
@@ -700,7 +694,7 @@ export class Input {
             readline.cursorTo(process.stdout, 0);
             this.logger.print(
               text +
-                `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${input.join("")}`,
+                `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${input.join("")}`,
               true
             );
             text = ``;
@@ -717,7 +711,7 @@ export class Input {
 
               text = `${Colors.foreground.gray}${path}${"\u00a0".repeat(40)}\n`;
               if (items.length == 0) {
-                text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
+                text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\tNo content found. ${Colors.foreground.gray}[Press backspace to go back]\n`;
               } else {
                 for (
                   let i = 0;
@@ -725,13 +719,13 @@ export class Input {
                   i++
                 ) {
                   if (i == 0)
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-                      this.colors.cyan
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+                      Colors.foreground.cyan
                     }${items[i].type === "folder" ? "  \u{1F4C1}" : "    "} ${
                       items[i].name
-                    }${"\u00a0".repeat(40)}${this.colors.reset}\n`;
+                    }${"\u00a0".repeat(40)}${Colors.reset}\n`;
                   else
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
                       items[i].type === "folder" ? "  \u{1F4C1}" : "    "
                     } ${items[i].name}${"\u00a0".repeat(40)}\n`;
                 }
@@ -740,7 +734,7 @@ export class Input {
               if (items.length < showFiles) {
                 for (let i = 0; i < showFiles - items.length; i++) {
                   text += `\x1b[30m\x1b[46m\u2B2A${
-                    this.colors.reset
+                    Colors.reset
                   }\t${"\u00a0".repeat(30)}\n`;
                 }
               }
@@ -752,7 +746,7 @@ export class Input {
               readline.cursorTo(process.stdout, 0);
               this.logger.print(
                 text +
-                  `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${input.join(
+                  `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${input.join(
                     ""
                   )}`,
                 true
@@ -776,17 +770,17 @@ export class Input {
                     i++
                   ) {
                     if (curChoice == i - offset)
-                      text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-                        this.colors.cyan
+                      text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+                        Colors.foreground.cyan
                       }${
                         items[i - offset].type === "folder"
                           ? "  \u{1F4C1}"
                           : "    "
                       } ${items[i - offset].name}${"\u00a0".repeat(40)}${
-                        this.colors.reset
+                        Colors.reset
                       }\n`;
                     else
-                      text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+                      text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
                         items[i - offset].type === "folder"
                           ? "  \u{1F4C1}"
                           : "    "
@@ -800,7 +794,7 @@ export class Input {
                   readline.cursorTo(process.stdout, 0);
                   this.logger.print(
                     text +
-                      `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${input.join(
+                      `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${input.join(
                         ""
                       )}`,
                     true
@@ -821,17 +815,17 @@ export class Input {
                     i++
                   ) {
                     if (curChoice == i + offset)
-                      text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-                        this.colors.cyan
+                      text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+                        Colors.foreground.cyan
                       }${
                         items[i + offset].type === "folder"
                           ? "  \u{1F4C1}"
                           : "    "
                       } ${items[i + offset].name}${"\u00a0".repeat(40)}${
-                        this.colors.reset
+                        Colors.reset
                       }\n`;
                     else
-                      text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+                      text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
                         items[i + offset].type === "folder"
                           ? "  \u{1F4C1}"
                           : "    "
@@ -841,7 +835,7 @@ export class Input {
                   if (items.length < showFiles) {
                     for (let i = 0; i < showFiles - items.length; i++) {
                       text += `\x1b[30m\x1b[46m\u2B2A${
-                        this.colors.reset
+                        Colors.reset
                       }\t${"\u00a0".repeat(30)}\n`;
                     }
                   }
@@ -853,7 +847,7 @@ export class Input {
                   readline.cursorTo(process.stdout, 0);
                   this.logger.print(
                     text +
-                      `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${input.join(
+                      `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${input.join(
                         ""
                       )}`,
                     true
@@ -879,17 +873,17 @@ export class Input {
                   i++
                 ) {
                   if (curChoice == i + offset)
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
-                      this.colors.cyan
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
+                      Colors.foreground.cyan
                     }${
                       items[i + offset].type === "folder"
                         ? "  \u{1F4C1}"
                         : "    "
                     } ${items[i + offset].name}${"\u00a0".repeat(40)}${
-                      this.colors.reset
+                      Colors.reset
                     }\n`;
                   else
-                    text += `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${
+                    text += `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${
                       items[i + offset].type === "folder"
                         ? "  \u{1F4C1}"
                         : "    "
@@ -899,7 +893,7 @@ export class Input {
                 if (items.length < showFiles) {
                   for (let i = 0; i < showFiles - items.length; i++) {
                     text += `\x1b[30m\x1b[46m\u2B2A${
-                      this.colors.reset
+                      Colors.reset
                     }\t${"\u00a0".repeat(30)}\n`;
                   }
                 }
@@ -911,7 +905,7 @@ export class Input {
                 readline.cursorTo(process.stdout, 0);
                 this.logger.print(
                   text +
-                    `\x1b[30m\x1b[46m\u2B2A${this.colors.reset}\t${input.join(
+                    `\x1b[30m\x1b[46m\u2B2A${Colors.reset}\t${input.join(
                       ""
                     )}`,
                   true

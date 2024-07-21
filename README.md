@@ -1,16 +1,16 @@
-![image](https://github.com/OGMatrix/ogmatrix-input/blob/main/assets/header.png?raw=true)
-# ogmatrix-input
+![image](https://github.com/OGMatrix/promptify.ts/blob/main/assets/header.png?raw=true)
+# promptify.ts
 
-![version](https://img.shields.io/badge/version-0.3.0-blue)
+![version](https://img.shields.io/badge/version-0.3.1-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
 
-**ogmatrix-input** is a modern, interactive command-line input utility for Node.js applications. It provides a rich and user-friendly experience for gathering various types of input, such as text, numbers, and selections, from the terminal. This library leverages the `readline` module to handle input efficiently and supports custom formatting and validation.
+**promptify.ts** is a modern, interactive command-line input utility for Node.js applications. It provides a rich and user-friendly experience for gathering various types of input, such as text, numbers, and selections, from the terminal. This library leverages the `readline` module to handle input efficiently and supports custom formatting and validation.
 
 ## Table of Contents
 
-- [ogmatrix-input](#ogmatrix-input)
+- [promptify.ts](#promptifyts)
   - [Overview](#overview)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
@@ -54,10 +54,10 @@
 
 ## Installation
 
-To install `ogmatrix-input`, use npm:
+To install `promptify.ts`, use npm:
 
 ```bash
-npm install ogmatrix-input
+npm install promptify.ts
 ```
 
 ## Usage
@@ -65,7 +65,7 @@ npm install ogmatrix-input
 ### Importing the Library
 
 ```typescript
-import { Input } from 'ogmatrix-input';
+import { Input } from 'promptify.ts';
 ```
 
 ### Prompt for Text Input
