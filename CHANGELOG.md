@@ -1,5 +1,15 @@
 # ogmatrix-input
 
+## 0.3.0
+
+### Minor Changes
+
+- f8564c7: Added a filedialog system to get more variety for prompts
+
+### Patch Changes
+
+- f8564c7: Added jest to better test the code before publish
+
 ## 0.2.3
 
 ### Patch Changes
