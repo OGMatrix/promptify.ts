@@ -18,7 +18,15 @@
   "keywords": [
     "input",
     "prompt",
-    "ogmatrix"
+    "ogmatrix",
+    "promptify",
+    "node",
+    "typescript",
+    "easy",
+    "interface",
+    "interactive",
+    "user",
+    "inputs"
   ],
   "author": "ogmatrix<matrix@ogmatrix.net>",
   "license": "MIT",
