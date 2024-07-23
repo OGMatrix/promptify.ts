@@ -5,10 +5,12 @@ import {Item} from "../index"
 export class Filesystem {
     private extensions: string[];
     private showHiddenFolders: boolean;
+    private showFiles: boolean;
 
-    constructor(extensions: string, showHiddenFolders: boolean = false) {
+    constructor(extensions: string, showHiddenFolders: boolean = false, showFiles = true) {
         this.extensions = extensions.split(",");
         this.showHiddenFolders = showHiddenFolders;
+        this.showFiles = showFiles;
     }
 
     public getPath(location: string): string {
@@ -28,7 +30,7 @@ export class Filesystem {
                 // Folder
                 if (this.showHiddenFolders && item.startsWith(".")) content.push({type: 'folder', name: item})
                 else if (!this.showHiddenFolders && !item.startsWith(".")) content.push({type: 'folder', name: item})
-            } else if (item.includes(".")) {
+            } else if (this.showFiles && item.includes(".")) {
                 // File
                 if (this.extensions[0] !== "*") {
                     if (item.split(".").length > 1) {

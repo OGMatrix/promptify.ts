@@ -17,21 +17,21 @@ const input = new Input();
   //   choices: ["Choice 1", "Choice 2"],
   //   q: "Which service do you want to use?",
   // });
-  // const res = await input.pwd({q: "How are you?"});
+  const res = await input.pwd({q: "How are you?"});
   // const res = await input.bool({
   //   q: "Möchtest du abbrechen?",
   //   default_bool: true,
   //   format: "json"
   // })
-  const res = await input.filedialog({
-    type: "file",
-    startPath: "D:/npm/packages/ogmatrix-input",
-    q: "What file do you want to use?",
-  });
+  // const res = await input.filedialog({
+  //   type: "file",
+  //   startPath: __dirname,
+  //   q: "What file do you want to use?",
+  // });
 
   console.log(res)
   
-  process.exit()
+  // process.exit()
 
   // designer.log_header()
 })();
