@@ -1,7 +1,7 @@
 ![image](https://github.com/OGMatrix/promptify.ts/blob/main/assets/header.png?raw=true)
 # promptify.ts
 
-![version](https://img.shields.io/badge/version-0.3.1-blue)
+![version](https://img.shields.io/badge/version-0.4.0-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
@@ -22,6 +22,7 @@
     - [Prompt for Password](#prompt-for-password)
     - [Prompt for Boolean](#prompt-for-boolean)
     - [Prompt for a File](#prompt-for-a-file)
+    - [Prompt for a Date](#prompt-for-a-date)
   - [Settings](#settings)
     - [Design](#design)
     - [Color Settings](#color-settings)
@@ -41,6 +42,9 @@
     - [`filedialog`](#filedialog)
       - [Parameters](#parameters-4)
       - [Returns](#returns-4)
+    - [`date`](#date)
+      - [Parameters](#parameters-5)
+      - [Returns](#returns-5)
   - [Formatting](#formatting)
     - [JSON Format](#json-format)
     - [Text Format](#text-format)
@@ -150,6 +154,19 @@ const input = new Input();
   const response = await input.filedialog({
     type: "file",
     q: "Select your config file"
+  });
+  console.log(response);
+})();
+```
+
+### Prompt for a Date
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.date({
+    q: "Select your favourite date"
   });
   console.log(response);
 })();
@@ -284,6 +301,21 @@ The `filedialog` method is used to gather a file path.
 - **showHiddenFolders**: `boolean` - Whether to show hidden folders (start with ".") (default: false).
 - **format**: `"json" | "text"` - The format of the returned data (default: "json").
 - **design**: `InputFiledialogDesignSettings` - Custom design settings for the prompt.
+
+#### Returns
+
+- `Promise<string | InputJsonOutput | null>` - The file path in the specified format.
+
+### `date`
+
+The `date` method is used to gather a date.
+
+#### Parameters
+
+- **q**: `string` - The question or prompt to display to the user.
+- **startDate**: `string` - Which date that should be selected by default (default: new Date())
+- **format**: `"json" | "text"` - The format of the returned data (default: "json").
+- **design**: `InputDateDesignSettings` - Custom design settings for the prompt.
 
 #### Returns
 
