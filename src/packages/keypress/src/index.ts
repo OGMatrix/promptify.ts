@@ -1,4 +1,4 @@
-import { Format, InputJsonOutput } from "../../input";
+import { Colors, Format, InputJsonOutput } from "../../input";
 
 function format(
   text: string,
