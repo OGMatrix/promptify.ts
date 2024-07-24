@@ -319,7 +319,7 @@ The `date` method is used to gather a date.
 
 #### Returns
 
-- `Promise<string | InputJsonOutput | null>` - The file path in the specified format.
+- `Promise<string | InputJsonOutput | null>` - The date in the specified format.
 
 ## Formatting
 
