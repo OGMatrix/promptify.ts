@@ -2,6 +2,7 @@ import { Format, Prompt, Selection } from "../type";
 import readline from "readline";
 import {
   InputBoolSettings,
+  InputDateSettings,
   InputFiledialogSettings,
   InputJsonOutput,
   InputPromptSettings,
@@ -13,7 +14,7 @@ import { Colors } from "../variables";
 import { Designer } from "./designer";
 import { Logger } from "../../logger";
 import { Filesystem } from "../../filesystem";
-import { InputBool, InputFiledialog, InputPrompt, InputPwd, InputSelection } from "../../keypress";
+import { InputBool, InputDate, InputFiledialog, InputPrompt, InputPwd, InputSelection } from "../../keypress";
 
 export class Input {
   public VERSION = "0.3.1";
@@ -84,6 +85,38 @@ export class Input {
     if (process.stdin.isTTY) process.stdin.setRawMode(true);
     return new Promise(async (resolve, reject) => {
       const handle = new InputPwd({q, required, format, design}, resolve)
+      process.stdin.on("keypress", handle.handleKeypress);
+    });
+  }
+
+  async date({
+    q,
+    startDate = new Date(),
+    format = "json",
+    design = {
+      header: Design.Modern,
+      body: Design.Modern,
+      colors: {
+        box_color: Colors.foreground.white,
+        shadow_color: Colors.foreground.gray,
+      },
+    },
+  }: InputDateSettings): Promise<string | InputJsonOutput | null> {
+    const designer = new Designer(design, this.logger, this.VERSION, q);
+
+    designer.log_header();
+
+    this.logger.print(
+      `${Colors.foreground.gray}[\u2190 go left] [\u2192 go right] [\u2191 increase] [\u2193 decrease] [press enter to select] [CTRL+C to exit]${Colors.reset}`
+    );
+
+    if (process.stdin.isTTY) process.stdin.setRawMode(true);
+    return new Promise(async (resolve, reject) => {
+      const handle = new InputDate({q, startDate, format, design}, resolve);
+      this.logger.print(`${handle.formatDate(startDate, 0)}`, true);
+      readline.cursorTo(process.stdout, 7);
+
+      readline.emitKeypressEvents(process.stdin);
       process.stdin.on("keypress", handle.handleKeypress);
     });
   }

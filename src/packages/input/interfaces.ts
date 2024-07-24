@@ -112,3 +112,22 @@ export interface InputFiledialogDesignColorSettings {
   box_color: string;
   shadow_color: string;
 }
+
+// Date
+export interface InputDateSettings {
+  q: string;
+  startDate?: Date;
+  format?: Format;
+  design?: InputDateDesignSettings;
+}
+
+export interface InputDateDesignSettings {
+  header: Design;
+  body: Design;
+  colors: InputDateDesignColorSettings
+}
+
+export interface InputDateDesignColorSettings {
+  box_color: string;
+  shadow_color: string;
+}
