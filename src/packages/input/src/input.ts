@@ -17,7 +17,7 @@ import { Filesystem } from "../../filesystem";
 import { InputBool, InputDate, InputFiledialog, InputPrompt, InputPwd, InputSelection } from "../../keypress";
 
 export class Input {
-  public VERSION = "0.3.1";
+  public VERSION = "0.4.0";
   public AUTHOR = "OGMatrix";
   public ID = "";
   private logger = new Logger();
