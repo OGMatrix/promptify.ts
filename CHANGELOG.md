@@ -1,5 +1,15 @@
 # ogmatrix-input
 
+## 0.4.0
+
+### Minor Changes
+
+- 7c4adef: Added a date method to provide more functionality
+
+### Patch Changes
+
+- bf25301: Splitted the handleKeypressed into individual files to keep the files as small as possible
+
 ## 0.3.1
 
 ### Patch Changes

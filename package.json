@@ -1,7 +1,7 @@
 {
   "name": "promptify.ts",
   "description": "A easy and modern npm package that controls users inputs to prompt the user in cmd.",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
