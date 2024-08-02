@@ -1,4 +1,3 @@
-import { Format, Prompt, Selection } from "../type";
 import readline from "readline";
 import {
   InputBoolSettings,
@@ -8,6 +7,7 @@ import {
   InputPromptSettings,
   InputPwdSettings,
   InputSelectionSettings,
+  InputUrlSettings,
 } from "../interfaces";
 import { Design } from "../enums";
 import { Colors } from "../variables";
@@ -15,9 +15,11 @@ import { Designer } from "./designer";
 import { Logger } from "../../logger";
 import { Filesystem } from "../../filesystem";
 import { InputBool, InputDate, InputFiledialog, InputPrompt, InputPwd, InputSelection } from "../../keypress";
+import { UrlProtocol } from "../type";
+import { UrlPrompt } from "../../keypress/src/handles/url";
 
 export class Input {
-  public VERSION = "0.5.0";
+  public VERSION = "0.5.1";
   public AUTHOR = "OGMatrix";
   public ID = "";
   private logger = new Logger();
@@ -236,6 +238,47 @@ export class Input {
 
       await handle.startup();
 
+      process.stdin.on("keypress", handle.handleKeypress);
+    });
+  }
+
+  async url({
+    protocol = "http(s)",
+    q,
+    required = true,
+    format = "json",
+    design = {
+      header: Design.Modern,
+      body: Design.Modern,
+      colors: {
+        box_color: Colors.foreground.white,
+        shadow_color: Colors.foreground.gray,
+      },
+    },
+  }: InputUrlSettings): Promise<string | InputJsonOutput | null> {
+    const designer = new Designer(design, this.logger, this.VERSION, q);
+
+    designer.log_header();
+
+    this.logger.print(`\u00a0\u00a0? ${" ".repeat(40)}`, true);
+    readline.cursorTo(process.stdout, 12);
+
+    // if (type === "text") {
+      
+    // } else if (type === "number") {
+    //   this.logger.print(`\u00a0\u00a0? ${"_".repeat(40)}`, true);
+    //   readline.cursorTo(process.stdout, 12);
+    // } else if (type === "word") {
+    //   this.logger.print("Word");
+    // } else {
+    //   return null;
+    // }
+
+    readline.emitKeypressEvents(process.stdin);
+
+    if (process.stdin.isTTY) process.stdin.setRawMode(true);
+    return new Promise(async (resolve, reject) => {
+      const handle = new UrlPrompt({protocol, q, required, format, design}, resolve);
       process.stdin.on("keypress", handle.handleKeypress);
     });
   }

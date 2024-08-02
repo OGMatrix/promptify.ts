@@ -28,7 +28,11 @@ const input = new Input();
   //   startPath: __dirname,
   //   q: "What file do you want to use?",
   // });
-  const res = await input.date({q: "Select a date"});
+  // const res = await input.date({q: "Select a date"});
+  const res = await input.url({
+      protocol: "http(s)",
+      q: "Please input a youtube url",
+  });
 
   console.log(res)
   

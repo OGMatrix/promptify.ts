@@ -1,5 +1,5 @@
 import { Design } from "./enums";
-import { FileType, Format, Prompt, Selection } from "./type";
+import { FileType, Format, Prompt, Selection, UrlProtocol } from "./type";
 import { Colors } from './variables';
 
 export interface InputJsonOutput {
@@ -128,6 +128,26 @@ export interface InputDateDesignSettings {
 }
 
 export interface InputDateDesignColorSettings {
+  box_color: string;
+  shadow_color: string;
+}
+
+// Url
+export interface InputUrlSettings {
+  q: string;
+  protocol?: UrlProtocol;
+  required?: boolean;
+  format?: Format;
+  design?: InputUrlDesignSettings;
+}
+
+export interface InputUrlDesignSettings {
+  header: Design;
+  body: Design;
+  colors: InputUrlDesignColorSettings
+}
+
+export interface InputUrlDesignColorSettings {
   box_color: string;
   shadow_color: string;
 }

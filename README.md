@@ -1,7 +1,7 @@
 ![image](https://github.com/OGMatrix/promptify.ts/blob/main/assets/header.png?raw=true)
 # promptify.ts
 
-![version](https://img.shields.io/badge/version-0.5.0-blue)
+![version](https://img.shields.io/badge/version-0.5.1-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
@@ -23,6 +23,7 @@
     - [Prompt for Boolean](#prompt-for-boolean)
     - [Prompt for a File](#prompt-for-a-file)
     - [Prompt for a Date](#prompt-for-a-date)
+    - [Prompt for a Url](#prompt-for-a-url)
   - [Settings](#settings)
     - [Design](#design)
     - [Color Settings](#color-settings)
@@ -45,6 +46,9 @@
     - [`date`](#date)
       - [Parameters](#parameters-5)
       - [Returns](#returns-5)
+    - [`url`](#url)
+      - [Parameters](#parameters-6)
+      - [Returns](#returns-6)
   - [Formatting](#formatting)
     - [JSON Format](#json-format)
     - [Text Format](#text-format)
@@ -167,6 +171,20 @@ const input = new Input();
 (async () => {
   const response = await input.date({
     q: "Select your favourite date"
+  });
+  console.log(response);
+})();
+```
+
+### Prompt for a Url
+
+```typescript
+const input = new Input();
+
+(async () => {
+  const response = await input.url({
+    q: "Input your favourite youtube video",
+    protocol: "https"
   });
   console.log(response);
 })();
@@ -320,6 +338,21 @@ The `date` method is used to gather a date.
 #### Returns
 
 - `Promise<string | InputJsonOutput | null>` - The date in the specified format.
+
+### `url`
+
+The `date` method is used to gather a url.
+
+#### Parameters
+
+- **q**: `string` - The question or prompt to display to the user.
+- **protocol**: `UrlProtocol` - What protocol should be accepted (default: https(s) )
+- **format**: `"json" | "text"` - The format of the returned data (default: "json").
+- **design**: `InputUrlDesignSettings` - Custom design settings for the prompt.
+
+#### Returns
+
+- `Promise<string | InputJsonOutput | null>` - The url in the specified format.
 
 ## Formatting
 

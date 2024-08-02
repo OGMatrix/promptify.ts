@@ -7,6 +7,7 @@ export const Colors = {
     green: "\x1b[32m",
     gray: "\x1b[90m",
     white: "\x1b[37m",
+    red: "\x1b[31m"
   },
   background: {
     gray: "\x1b[100m",
