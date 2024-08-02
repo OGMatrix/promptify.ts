@@ -1,5 +1,11 @@
 # ogmatrix-input
 
+## 0.5.1
+
+### Patch Changes
+
+- c67a118: Added url method to gather input about an url (website)
+
 ## 0.5.0
 
 ### Minor Changes
