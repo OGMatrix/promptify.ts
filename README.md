@@ -1,7 +1,7 @@
 ![image](https://github.com/OGMatrix/promptify.ts/blob/main/assets/header.png?raw=true)
 # promptify.ts
 
-![version](https://img.shields.io/badge/version-0.4.1-blue)
+![version](https://img.shields.io/badge/version-0.5.0-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
 
 ## Overview
