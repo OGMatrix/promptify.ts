@@ -24,7 +24,7 @@ function isNumber(text: string): boolean {
 }
 
 function isSymbol(text: string): boolean {
-  return /^[_,-]$/.test(text);
+  return /^[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]$/.test(text);
 }
 
 export { format, isLetter, isNumber, isSymbol };
