@@ -1,6 +1,7 @@
 import { format, isLetter, isNumber, isSymbol, isUrl } from "../index";
 import { Colors, InputJsonOutput, InputUrlSettings } from "../../../input";
 import readline from "readline";
+import { LocaleManager } from "../../../locale";
 
 export class UrlPrompt {
   private input: string[] = [];
@@ -13,6 +14,7 @@ export class UrlPrompt {
       | null
   ) => void;
   private error: boolean = false;
+  private localeManager = new LocaleManager();
 
   constructor(
     settings: InputUrlSettings,
@@ -38,7 +40,7 @@ export class UrlPrompt {
       process.stdout.write(
         Colors.foreground.red +
           this.input.join("") +
-          "  (Url invalid)" +
+          `  (${this.localeManager.getLocales().methods.url.errors.invalid})` +
           Colors.reset
       );
       readline.cursorTo(process.stdout, 12 + this.input.length);

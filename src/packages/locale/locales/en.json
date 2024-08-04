@@ -1,4 +1,7 @@
 {
+    "errors": {
+        "required": "Please enter something."
+    },
     "methods": {
         "url": {
             "errors": {
