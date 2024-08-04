@@ -2,7 +2,7 @@
     "methods": {
         "url": {
             "errors": {
-                "invalid": "Url is not valid."
+                "invalid": "URL ist ungültig."
             }
         }
     }
