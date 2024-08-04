@@ -5,7 +5,7 @@ These things are not in order and will come randomly.
 ## 🧾 TODOs
 
 - [ ] Add options to select default regex check for ex. youtube, instagram and not only for https. (Method: url)
-- [ ] Add locales
+- [X] Add locales
 - [ ] Add (understandable) errors
 - [ ] Add date, time and date&time (Method: datepicker)
 
