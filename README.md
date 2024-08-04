@@ -3,6 +3,7 @@
 
 ![version](https://img.shields.io/badge/version-0.5.1-blue)
 ![author](https://img.shields.io/badge/author-OGMatrix-green)
+[![Crowdin](https://badges.crowdin.net/promptifyts/localized.svg)](https://crowdin.com/project/promptifyts)
 
 ## Overview
 
