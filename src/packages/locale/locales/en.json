@@ -1,0 +1,9 @@
+{
+    "methods": {
+        "url": {
+            "errors": {
+                "invalid": "Url is not valid."
+            }
+        }
+    }
+}
