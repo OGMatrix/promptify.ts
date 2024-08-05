@@ -1,6 +1,6 @@
 {
     "errors": {
-        "required": "Please enter something."
+        "required": "Bitte geben Sie etwas ein."
     },
     "methods": {
         "url": {
