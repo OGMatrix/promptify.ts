@@ -1,5 +1,22 @@
 # ogmatrix-input
 
+## 0.5.1
+
+### Patch Changes
+
+- c67a118: Added url method to gather input about an url (website)
+
+## 0.5.0
+
+### Minor Changes
+
+- e1689b4: Added a date method to provide more functionality
+
+### Patch Changes
+
+- e1689b4: Added new symbols
+- e1689b4: Splitted the handleKeypressed into individual files to keep the files as small as possible
+
 ## 0.4.0
 
 ### Minor Changes

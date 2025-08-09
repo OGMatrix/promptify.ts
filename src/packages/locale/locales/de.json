@@ -1,0 +1,12 @@
+{
+    "errors": {
+        "required": "Bitte geben Sie etwas ein."
+    },
+    "methods": {
+        "url": {
+            "errors": {
+                "invalid": "URL ist ungültig."
+            }
+        }
+    }
+}
